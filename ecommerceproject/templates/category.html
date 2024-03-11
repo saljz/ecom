@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+<!--meta description code-->
+{% block metadescription %}
+    {% if category %}
+        {{category.desc|truncatewords:153 }}
+    {% else %}
+    welcome toABC Storen,Where you can scroll down your matching Outwear
+    {% endif %}
+{% endblock %}
+
+<!--title code-->
+{% block title %}
+    {% if category %}
+        {{ category.name}}ABC Store
+    {% else %}
+       @ Seasons store
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+    {% if category %}
+        <div >
+            <div class="row my_row_class">
+                <div class="mx_auto ">
+                <p ><a  href="{% url 'shop:allProdCat' %}"> </a></p>
+            </div>
+                </div>
+        </div>
+    {% endif %}
+
+<div class="mx_auto ">
+    {% if category %}
+    <img class="my_image" src="{{category.img.url}}" alt="{{category.name}}" style="width:1110px;height:450px ;" >
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title"> {{category.name}}</h1>
+     <p class="text-justify">{{category.desc}}</p>
+</div>
+    {% else %}
+<div class="mx_auto my_row_class">
+    <br>
+    <img alt="Our Products" class="my_image " src="{% static 'img/gro.jpg' %}"
+         style="width:1110px;height:450px;">
+</div>
+<br>
+
+<div>
+    <h1 class="text-center my_title"> Our Products Collection</h1>
+    <p class="text-justify">Organic products are grown under a system of agriculture without the use of chemical fertilizers and pesticides with an environmentally and socially responsible approach. This is a method of farming that works at grass root level preserving the reproductive and regenerative capacity of the soil, good plant nutrition, and sound soil management, produces nutritious food rich in vitality which has resistance to diseases.India is bestowed with lot of potential to produce all varieties of organic products due to its various agro climatic conditions. In several parts of the country, the inherited tradition of organic farming is an added advantage. This holds promise for the organic producers to tap the market which is growing steadily in the domestic and export sector.</p>
+</div>
+    {% endif %}
+
+<div class="container">
+    <div class="row mx_auto" >
+        {% for product in products.object_list %}
+             <div class="my_bottom_margin col-sm-12 col-md-4 xol-lg-4">
+                 <div class="card text-center" style="min-width:18rem;">
+                    <a href="{{product.get_url}}" > <img class="card img-top my_image" src="{{ product.img.url}}" alt="{{product.name}}" style="padding-right:5px;width:340px;height:270px">
+                        <div class="card-body">
+                        <h4> {{product.name}}</h4>
+                         <p>${{product.price}}</p>
+                        </div>
+                 </div>
+             </div>
+            {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
